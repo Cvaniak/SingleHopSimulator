@@ -94,17 +94,13 @@ def create_nodes(nodes_number):
 def create_nodes_sc2(nodes_number, u_number):
     return [Node(index, u_number) for index in range(1, nodes_number+1)]
 
-def main(loop_counter, nodes, nodes_number=100):
+def main(loop_counter, nodes, nodes_number=100, is_plt=0):
     global HISTO_COUNTER
     counter = 0
     last_lider = 0
     d = defaultdict(int)
     d1 = defaultdict(int)
     d2 = []
-
-    # fig, ax = plt.subplots()
-    # ax.grid(color='#2A3459')
-    # ax.set_axisbelow(True)
 
     while counter < loop_counter:
         counter += 1 
@@ -125,56 +121,40 @@ def main(loop_counter, nodes, nodes_number=100):
     #     # elog.append(e*log(i+1))
     #     if not d[i]:
     #         d[i] = 0
-        
 
-    d = dict(sorted(d.items(), key=lambda item: item[0]))
-    plt.subplot(int(f'42{HISTO_COUNTER}'))
-    draw_bar(None, None, list(d.keys()), list(d.values()))
-    HISTO_COUNTER += 1
+    if is_plt:
+        d = dict(sorted(d.items(), key=lambda item: item[0]))
+        plt.subplot(int(f'42{HISTO_COUNTER}'))
+        draw_bar(None, None, list(d.keys()), list(d.values()))
+        HISTO_COUNTER += 1
+        plt.subplot(int(f'42{HISTO_COUNTER}'))
+        HISTO_COUNTER += 1
+        plt.bar(range(len(d1)), list(d1.values()), color=colors)
 
-    # plt.subplot(211)
-    # plt.bar(range(len(d)), list(d.values()), color=colors, width=0.2)
-    # for i in range(n_shades):
-    #     plt.bar(range(len(d)), list(d.values()),
-    #                     width=0.2+(0.1+diff_linewidth*i),
-    #                     color=colors,
-    #                     alpha=alpha_value
-    #                     )
-    # plt.xticks(range(len(d)), list(d.keys()))
-    
-    # ax.set_xlim([ax.get_xlim()[0] - 0.2, ax.get_xlim()[1] + 0.2])  # to not have the markers cut off
-    # ax.set_ylim(0)
-
-    plt.subplot(int(f'42{HISTO_COUNTER}'))
-    HISTO_COUNTER += 1
-    plt.bar(range(len(d1)), list(d1.values()), color=colors)
-    # print(sum(d.values())/1000)
     temp = sum([k*v for k,v in d.items()])
     print(f"{temp} - {sum(d.values())}")
     print(temp/sum(d.values()))
 
 
-    # plt.plot(range(len(elog)), elog )
-    # for column, color in zip(df, colors):
-    #     ax.fill_between(x=df.index,
-    #                     y1=df[column].values,
-    #                     y2=[0] * len(df),
-    #                     color=color,
-    #                     alpha=0.1)
-    
 
 if __name__ == '__main__':
     # random.seed(1234)
     loop_counter = 1000
     # nodes_number = input() or 100
     nodes = create_nodes(100) 
-    main(int(loop_counter), nodes, 100)
+    main(int(loop_counter), nodes, 100, 1)
     nodes = create_nodes_sc2(2, 100) 
-    main(int(loop_counter), nodes, 100)
+    main(int(loop_counter), nodes, 100, 1)
     nodes = create_nodes_sc2(50, 100) 
-    main(int(loop_counter), nodes, 100)
+    main(int(loop_counter), nodes, 100, 1)
     nodes = create_nodes_sc2(100, 100) 
-    main(int(loop_counter), nodes, 100)
+    main(int(loop_counter), nodes, 100, 1)
     plt.show()
 
-    
+    for i in range(0,20, 4):
+        for j in range(i, 20, 4):
+            nodes = create_nodes_sc2(i, j) 
+            main(int(loop_counter), nodes, j)
+
+
+
